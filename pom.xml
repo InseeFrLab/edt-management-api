@@ -6,17 +6,20 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.12</version>
+		<version>4.0.5</version>
 		<relativePath /> <!-- lookup parent from repository --> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>fr.insee</groupId>
 	<artifactId>edt-management-api</artifactId>
-	<version>0.5.1</version>
+	<version>0.6.0</version>
 	<name>edt-management</name>
 	<description>EDT management API</description>
 	<properties>
+		<!--Overwrite Spring managed dependencies to fix CVE -->
+        <tomcat.version>10.1.54</tomcat.version>
+		<!-- Other properties -->
 		<jacoco.version>0.8.10</jacoco.version>
-		<java.version>17</java.version>
+		<java.version>21</java.version>
 		<opencsv.version>5.12.0</opencsv.version>
 		<springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
 		<surefire.version>3.1.2</surefire.version>
