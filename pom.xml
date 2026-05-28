@@ -6,19 +6,20 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.5</version>
+		<version>4.0.6</version>
 		<relativePath /> <!-- lookup parent from repository --> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>fr.insee</groupId>
 	<artifactId>edt-management-api</artifactId>
-	<version>0.6.0</version>
+	<version>0.6.1</version>
 	<name>edt-management</name>
 	<description>EDT management API</description>
 	<properties>
 		<!--Overwrite Spring managed dependencies to fix CVE -->
-        <tomcat.version>10.1.54</tomcat.version>
+        <tomcat.version>11.0.22</tomcat.version>
 		<!-- Other properties -->
-		<jacoco.version>0.8.10</jacoco.version>
+		<lombok.version>1.18.46</lombok.version>
+		<jacoco.version>0.8.14</jacoco.version>
 		<java.version>21</java.version>
 		<opencsv.version>5.12.0</opencsv.version>
 		<springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
@@ -108,10 +109,18 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>versions-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<includes>fr.insee.edt-management</includes>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>1.18.46</version>
+						</path>
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 			<plugin>
