@@ -21,37 +21,36 @@ public class AuthorizationService {
 	private boolean looseCheckHabilitation;
 
 	@Cacheable("isAuthorized")
-	public Boolean isAuthorized(String interrogationId, String expectedRole, String campaignId, String userId) {
+	public Boolean isAuthorized(String interrogationId, String expectedRole, String userId) {
 
-		log.debug("Service checking Authorization of userId : {} on interrogationId : {} campaign : {} role :  {} ", userId, interrogationId,
-				campaignId, expectedRole);
+		log.debug("Service checking Authorization of userId : {} on interrogationId : {} and role :  {} ", userId, interrogationId,expectedRole);
 		
 		if (Constants.INTERVIEWER.equals(StringUtils.upperCase(expectedRole))) {
-			if (checkInterviewerHabilitation(interrogationId, campaignId, userId)) {
-				return true;
+			if (checkInterviewerHabilitation(interrogationId, userId)) {
+				return true; 
 				// Workaround to handle checkHabilitation request from queen BO in case of 
 				// some PUT request made by a reviewer 
 			} else if (looseCheckHabilitation) {
 				log.info("Looking for an habilitation for user {} as a reviewer",userId);
-				return checkReviewerHabilitation(interrogationId, campaignId, userId);
+				return checkReviewerHabilitation(interrogationId, userId);
 			}
 		}
 
 		if (Constants.REVIEWER.equals(StringUtils.upperCase(expectedRole))) {
-			return checkReviewerHabilitation(interrogationId, campaignId, userId);
+			return checkReviewerHabilitation(interrogationId, userId);
 		}
 
 		return false;
 
 	}
 
-	private boolean checkInterviewerHabilitation(String interrogationId, String campaignId, String userId) {
+	private boolean checkInterviewerHabilitation(String interrogationId, String userId) {
 		return surveyAssigmentRepository
-				.findByInterviewerIdIgnoreCaseAndInterrogationIdAndCampaignId(userId, interrogationId, campaignId).isPresent();
+				.findByInterviewerIdIgnoreCaseAndInterrogationId(userId, interrogationId).isPresent();
 	}
 
-	private boolean checkReviewerHabilitation(String interrogationId, String campaignId, String userId) {
+	private boolean checkReviewerHabilitation(String interrogationId, String userId) {
 		return surveyAssigmentRepository
-				.findByReviewerIdIgnoreCaseAndInterrogationIdAndCampaignId(userId, interrogationId, campaignId).isPresent();          
+				.findByReviewerIdIgnoreCaseAndInterrogationId(userId, interrogationId).isPresent();          
 	}
 }

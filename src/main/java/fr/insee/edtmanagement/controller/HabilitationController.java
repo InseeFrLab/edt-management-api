@@ -26,7 +26,7 @@ public class HabilitationController {
 	public ResponseEntity<HabilitationDto> checkHabilitation(
 			@RequestParam(value = "id", required = true) String interrogationId,
 			@RequestParam(value = "role", required = false) String expectedRole,
-			@RequestParam(value = "campaign", required = true) String campaignId,
+			@RequestParam(value = "campaign", required = false) String campaignId,
 			@RequestParam(value = "idep", required = true) String userId) {
 		
 		//Queen Back Office doesnt send the role when it concerns an INTERVIEWER
@@ -34,11 +34,11 @@ public class HabilitationController {
 			expectedRole = Constants.INTERVIEWER;
 		}
 		
-		log.info("Checking Habilitation for interrogation {} in campaign  {} with role {} as {} ",interrogationId,campaignId,expectedRole,userId);
+		log.info("Checking Habilitation for interrogation {} in campaign  {} with role {} as {} ",interrogationId,expectedRole,userId);
 
 		HabilitationDto habilitation = new HabilitationDto();
 		
-		boolean kAutorisation= authorizationService.isAuthorized(interrogationId, expectedRole, campaignId, userId);	
+		boolean kAutorisation= authorizationService.isAuthorized(interrogationId, expectedRole, userId);	
 		habilitation.setHabilitated(kAutorisation);
 		
 		log.info("Access " + (kAutorisation ? "granted" : "denied") + " for {} on interrogation {} ", userId, interrogationId);
